@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/tomertv2/dark-web-scraping/issues"
   },
-  "homepage": "https://github.com/tomertv2/dark-web-scraping#readme"
+  "homepage": "https://github.com/tomertv2/dark-web-scraping#readme",
+  "dependencies": {
+    "puppeteer": "^5.5.0"
+  }
 }
