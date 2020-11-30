@@ -9,8 +9,6 @@ const scraper = async () => {
 
   const page = await browser.newPage();
   await page.goto('http://nzxj65x32vh2fkhk.onion/all');
-  // Use in cases that the site does not work
-  // await page.goto('http://localhost:3000/');
 
   const content = await page.content();
   const $ = cheerio.load(content);
@@ -21,20 +19,20 @@ const scraper = async () => {
   postsCheerio.map((i, post) => {
     const title = $(post).find('h4').text().trim();
     const content = $(post).find('.text').text().trim();
-    const footer = $(post).find('.pre-footer').text().split('Language')[0].split(/(\bat.*\b)(?!.*\1)/g);
-    const authorArr = footer[0].trim().split(' ');
-    const author = authorArr[authorArr.length - 1];
-    const date = footer[1];
+    let footer = $(post).find('.pre-footer').text().trim();
+    footer = footer.substring(0, footer.indexOf('UTC')).substring(10).trim();
+    const date = new Date(
+      Date.parse(footer.substring(footer.length - 21) + ' UTC')
+    );
+    const author = footer.substring(0, footer.length - 25);
     posts.push({ title, content, author, date });
   });
 
   // Remove search bar
   posts.shift();
 
-  // console.log(posts);
-
   await browser.close();
-  
+
   return posts;
 };
 

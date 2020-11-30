@@ -1,5 +1,4 @@
 const express = require('express');
-const scraper = require('./scraper.js');
 const { Post } = require('./models');
 require('dotenv').config();
 
@@ -9,13 +8,7 @@ app.use(express.json());
 // Get all posts from db
 app.get('/posts', async (req, res) => {
   try {
-    const posts = await scraper();
-    for (const post of posts) {
-      // Implement here because an error
-      post.date = new Date(Date.parse(post.date.substring(3)));
-      const newPost = await Post.create(post);
-      console.log(newPost);
-    }
+    
   } catch (error) {
     // Error!
     console.log('Error occurre:', error);
