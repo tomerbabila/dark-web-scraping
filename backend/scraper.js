@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 
-(async () => {
+const scraper = async () => {
   const browser = await puppeteer.launch({
     args: ['--proxy-server=socks5://127.0.0.1:9050'],
     headless: false,
@@ -31,7 +31,11 @@ const cheerio = require('cheerio');
   // Remove search bar
   posts.shift();
 
-  console.log(posts);
+  // console.log(posts);
 
   await browser.close();
-})();
+  
+  return posts;
+};
+
+module.exports = scraper;
