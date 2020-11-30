@@ -8,26 +8,20 @@ app.use(express.json());
 // Get all posts from db
 app.get('/posts', async (req, res) => {
   try {
-    
+    const allPosts = await Post.findAll();
+    res.json(allPosts);
   } catch (error) {
-    // Error!
-    console.log('Error occurre:', error);
+    console.log('Error occurred: ', error);
   }
 });
 
-app.get('/:search', (req, res) => {
+// Get post by id
+app.get('/:id', (req, res) => {
   try {
-    // Get all posts from db
+    const post = await Post.findByPk(req.params.id);
+    res.json(post);
   } catch (error) {
-    // Error!
-  }
-});
-
-app.post('/posts', (req, res) => {
-  try {
-    // Check if there are new posts and if yes, get theme
-  } catch (error) {
-    // Error!
+    console.log('Error occurred: ', error);
   }
 });
 

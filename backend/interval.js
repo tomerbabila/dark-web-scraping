@@ -13,7 +13,7 @@ const fetchNewData = async () => {
       }
     }
   } catch (error) {
-    console.log(error);
+    console.log('Error occurred: ', error);
   }
 };
 
