@@ -6,7 +6,7 @@ const fetchNewData = async () => {
     const posts = await scraper();
     for (const post of posts) {
       const check = await Post.findOne({
-        where: { title: post.title, content: post.content },
+        where: { date: post.date },
       });
       if (!check) {
         await Post.create(post);
