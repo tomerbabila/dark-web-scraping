@@ -1,6 +1,5 @@
 const express = require('express');
 const { Post } = require('./models');
-require('dotenv').config();
 
 const app = express();
 app.use(express.json());
@@ -16,10 +15,20 @@ app.get('/posts', async (req, res) => {
 });
 
 // Get post by id
-app.get('/:id', (req, res) => {
+app.get('/post/:id', async (req, res) => {
   try {
     const post = await Post.findByPk(req.params.id);
     res.json(post);
+  } catch (error) {
+    console.log('Error occurred: ', error);
+  }
+});
+
+// Get filtered posts
+app.get('/search/:search', async (req, res) => {
+  try {
+      const search = req.params.search;
+      const allPosts = await Post.findAll({where: {}});
   } catch (error) {
     console.log('Error occurred: ', error);
   }

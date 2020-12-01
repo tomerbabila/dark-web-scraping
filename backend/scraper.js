@@ -32,7 +32,7 @@ const scraper = async () => {
         posts.push({ title, content, author, date });
       });
     })
-    .catch((error) => console.log('Error occurre: ', error));
+    .catch((error) => console.log('Error occurred: ', error));
 
   // Remove search bar
   posts.shift();
