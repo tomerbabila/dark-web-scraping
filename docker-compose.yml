@@ -1,0 +1,73 @@
+version: "3"
+
+services:
+  frontend:
+    build:
+      context: "."
+      dockerfile: Dockerfile.frontend
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules/
+    command: sh -c '/opt/wait_for_it.sh mysql:3306 && npm start'
+    networks:
+      frontapp_a:
+        ipv4_address: 172.22.0.14
+    depends_on:
+      - mysql
+  
+
+  backend:
+    build:
+      context: "."
+      dockerfile: Dockerfile.backend
+    container_name: backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules/
+    command: sh -c '/opt/wait_for_it.sh mysql:3306 && npm run docker & node interval.js'
+    environment:
+      - MYSQL_ROOT_PASSWORD=tomer
+      - MYSQL_USER=tomer
+      - MYSQL_PASSWORD=tomer
+      - MYSQL_DATABASE=scraping_data_dev
+    networks:
+      frontapp_a:
+        ipv4_address: 172.22.0.12
+    depends_on:
+      - mysql
+
+  proxy:
+    image: dperson/torproxy
+    container_name: proxy
+    ports:
+      - "9050:9050"
+      - "8118:8118"
+    networks:
+      frontapp_a:
+        ipv4_address: 172.22.0.11
+
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    hostname: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=tomer
+      - MYSQL_USER=tomer
+      - MYSQL_PASSWORD=tomer
+      - MYSQL_DATABASE=scraping_data_dev
+    networks:
+      frontapp_a:
+        ipv4_address: 172.22.0.10
+
+networks:
+  frontapp_a:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.22.0.0/16

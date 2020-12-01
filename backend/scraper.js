@@ -10,7 +10,7 @@ const scraper = async () => {
     url: url,
     agentClass: Agent,
     agentOptions: {
-      socksHost: 'localhost', // Defaults to 'localhost'.
+      socksHost: '172.22.0.11', // Defaults to 'localhost'.
       socksPort: 9050, // Defaults to 1080.
     },
   })

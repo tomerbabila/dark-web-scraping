@@ -8,7 +8,7 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.changeColumn('Posts', 'content', {
+    await queryInterface.changeColumn('posts', 'content', {
       type: Sequelize.TEXT,
     });
   },
