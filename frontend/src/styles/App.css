@@ -25,16 +25,13 @@
 
 .App .content .posts {
   height: 80vh;
-  width: 40%;
-  max-width: 40%;
   border: 1px solid black;
   word-wrap: break-word;
+  overflow-y: scroll;
 }
 
 .App .content .analytics {
   height: 80vh;
-  width: 60%;
-  max-width: 60%;
   border: 1px solid black;
 }
 /*# sourceMappingURL=App.css.map */

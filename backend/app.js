@@ -1,5 +1,6 @@
 const express = require('express');
 const { Post } = require('./models');
+const { Op } = require('sequelize');
 
 const app = express();
 app.use(express.json());
@@ -27,8 +28,34 @@ app.get('/post/:id', async (req, res) => {
 // Get filtered posts
 app.get('/search/:search', async (req, res) => {
   try {
-      const search = req.params.search;
-      const allPosts = await Post.findAll({where: {}});
+    const search = `%${req.params.search}%`;
+    const allPosts = await Post.findAll({
+      where: {
+        [Op.or]: [
+          {
+            title: {
+              [Op.like]: search,
+            },
+          },
+          {
+            content: {
+              [Op.like]: search,
+            },
+          },
+          {
+            author: {
+              [Op.like]: search,
+            },
+          },
+          {
+            date: {
+              [Op.like]: search,
+            },
+          },
+        ],
+      },
+    });
+    res.json(allPosts);
   } catch (error) {
     console.log('Error occurred: ', error);
   }
