@@ -1,0 +1,25 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  h1 {
+    text-align: center;
+    height: 10%;
+  }
+  .content {
+    display: flex;
+    flex-direction: row;
+    .posts {
+      height: 80vh;
+      width: 40%;
+      max-width: 40%;
+      border: 1px solid black;
+      word-wrap: break-word;
+    }
+    .analytics {
+      height: 80vh;
+      width: 60%;
+      max-width: 60%;
+      border: 1px solid black;
+    }
+  }
+}
