@@ -15,12 +15,14 @@ module.exports = (sequelize, DataTypes) => {
   };
   Post.init({
     title: DataTypes.STRING,
-    content: DataTypes.STRING,
+    content: DataTypes.TEXT,
     author: DataTypes.STRING,
-    date: DataTypes.DATE
+    date: DataTypes.DATE,
+    labels: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Post',
+    tableName: 'posts'
   });
   return Post;
 };

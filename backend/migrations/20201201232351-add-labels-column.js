@@ -2,9 +2,14 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.changeColumn('Posts', 'content', {
-      type: Sequelize.TEXT,
-    });
+    queryInterface.addColumn(
+      'posts', // table name
+      'labels', // new field name
+      {
+        type: Sequelize.STRING,
+        allowNull: true,
+      }
+    )
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -14,5 +19,5 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-  },
+  }
 };
