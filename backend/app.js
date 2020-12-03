@@ -64,7 +64,8 @@ app.get('/search/:search', async (req, res) => {
   }
 });
 
-app.get('/filter/byDays/:offset', async (req, res) => {
+// Get analytics of a week by days
+app.get('/analytics/byDays/:offset', async (req, res) => {
   try {
     const offset = parseInt(req.params.offset);
 
@@ -96,7 +97,8 @@ app.get('/filter/byDays/:offset', async (req, res) => {
   }
 });
 
-app.get('/filter/byHours/:offset', async (req, res) => {
+// Get analytics of a day by hours
+app.get('/analytics/byHours/:offset', async (req, res) => {
   try {
     const offset = parseInt(req.params.offset);
 
@@ -217,6 +219,31 @@ app.get('/filter/byHours/:offset', async (req, res) => {
     }
 
     res.json(byHoursArr);
+  } catch (error) {
+    console.log('Error occurred: ', error);
+  }
+});
+
+// Get a analytics of authors
+app.get('/analytics/byAuthors', async (req, res) => {
+  try {
+    const authorsPosts = await Post.findAll({
+      attributes: ['author'],
+      raw: true,
+    });
+
+    const authorsArr = [];
+
+    for (const { author } of authorsPosts) {
+      const index = authorsArr.findIndex((e) => e.author === author);
+      if (index === -1) {
+        authorsArr.push({ author, count: 1 });
+      } else {
+        authorsArr[index].count++;
+      }
+    }
+
+    res.json(authorsArr);
   } catch (error) {
     console.log('Error occurred: ', error);
   }
