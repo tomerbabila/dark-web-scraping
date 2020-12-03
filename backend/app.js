@@ -249,4 +249,53 @@ app.get('/analytics/byAuthors', async (req, res) => {
   }
 });
 
+// Get a analytics of labels
+app.get('/analytics/byLabels', async (req, res) => {
+  try {
+    const labelsPosts = await Post.findAll({
+      attributes: ['labels'],
+      raw: true,
+    });
+
+    const labelsCounter = [
+      {
+        category: 'general',
+        count: 0,
+      },
+      {
+        category: 'pornography',
+        count: 0,
+      },
+      {
+        category: 'weapons',
+        count: 0,
+      },
+      {
+        category: 'dark-link',
+        count: 0,
+      },
+      {
+        category: 'money',
+        count: 0,
+      },
+    ];
+
+    for (const { labels } of labelsPosts) {
+      if (!labels) {
+        labelsCounter[0].count++;
+      } else {
+        const labelsArr = labels.split(';');
+        for (const label of labelsArr) {
+          const index = labelsCounter.findIndex((e) => e.category === label);
+          labelsCounter[index].count++;
+        }
+      }
+    }
+
+    res.json(labelsCounter);
+  } catch (error) {
+    console.log('Error occurred: ', error);
+  }
+});
+
 module.exports = app;
