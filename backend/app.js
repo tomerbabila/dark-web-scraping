@@ -64,7 +64,7 @@ app.get('/search/:search', async (req, res) => {
   }
 });
 
-app.get('/filter/byDay/:offset', async (req, res) => {
+app.get('/filter/byDays/:offset', async (req, res) => {
   try {
     const offset = parseInt(req.params.offset);
 
@@ -84,13 +84,139 @@ app.get('/filter/byDay/:offset', async (req, res) => {
 
       byDayArr.push({
         date: new Date(i).toLocaleDateString(),
-        posts: postsBetweenDates.length,
+        count: postsBetweenDates.length,
       });
     }
 
     console.log(byDayArr);
 
     res.json(byDayArr);
+  } catch (error) {
+    console.log('Error occurred: ', error);
+  }
+});
+
+app.get('/filter/byHours/:offset', async (req, res) => {
+  try {
+    const offset = parseInt(req.params.offset);
+
+    const byHoursArr = [
+      {
+        hour: '00:00',
+        count: 0,
+      },
+      {
+        hour: '01:00',
+        count: 0,
+      },
+      {
+        hour: '02:00',
+        count: 0,
+      },
+      {
+        hour: '03:00',
+        count: 0,
+      },
+      {
+        hour: '04:00',
+        count: 0,
+      },
+      {
+        hour: '05:00',
+        count: 0,
+      },
+      {
+        hour: '06:00',
+        count: 0,
+      },
+      {
+        hour: '07:00',
+        count: 0,
+      },
+      {
+        hour: '08:00',
+        count: 0,
+      },
+      {
+        hour: '09:00',
+        count: 0,
+      },
+      {
+        hour: '10:00',
+        count: 0,
+      },
+      {
+        hour: '11:00',
+        count: 0,
+      },
+      {
+        hour: '12:00',
+        count: 0,
+      },
+      {
+        hour: '13:00',
+        count: 0,
+      },
+      {
+        hour: '14:00',
+        count: 0,
+      },
+      {
+        hour: '15:00',
+        count: 0,
+      },
+      {
+        hour: '16:00',
+        count: 0,
+      },
+      {
+        hour: '17:00',
+        count: 0,
+      },
+      {
+        hour: '18:00',
+        count: 0,
+      },
+      {
+        hour: '19:00',
+        count: 0,
+      },
+      {
+        hour: '20:00',
+        count: 0,
+      },
+      {
+        hour: '21:00',
+        count: 0,
+      },
+      {
+        hour: '22:00',
+        count: 0,
+      },
+      {
+        hour: '23:00',
+        count: 0,
+      },
+    ];
+
+    const postsOnDate = await Post.findAll({
+      where: {
+        date: {
+          [Op.between]: [
+            new Date(offset),
+            new Date(offset + dayInMilliseconds),
+          ],
+        },
+      },
+      raw: true,
+    });
+
+    for (const post of postsOnDate) {
+      const postHour = post.date.getHours();
+      byHoursArr[postHour].count++;
+    }
+
+    res.json(byHoursArr);
   } catch (error) {
     console.log('Error occurred: ', error);
   }
