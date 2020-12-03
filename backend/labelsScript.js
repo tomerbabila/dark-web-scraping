@@ -1,4 +1,5 @@
 const addLabels = async (postTitle, postContent) => {
+  
   const pornographyArr = [
     'girls',
     'boys',
@@ -32,7 +33,7 @@ const addLabels = async (postTitle, postContent) => {
 
   const weaponArr = ['weapon', 'weapons', 'guns', 'gunz', 'army', 'ammo'];
 
-  const onion = 'onion';
+  const linkArr = ['.onion', 'http://', 'https://', 'bit.ly', '.com', '.net', 'www.'];
 
   const checkMoney = (title, content) => {
     for (let i = 0; i < moneyArr.length; i++) {
@@ -64,11 +65,20 @@ const addLabels = async (postTitle, postContent) => {
     return false;
   };
 
+  const checkLink = (title, content) => {
+    for (let i = 0; i < linkArr.length; i++) {
+      if (title.includes(linkArr[i]) || content.includes(linkArr[i])) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   let labels = '';
   const title = postTitle.toLowerCase();
   const content = postContent.toLowerCase();
 
-  if (title.includes(onion) || content.includes(onion)) {
+  if (checkLink(title, content)) {
     labels = labels + 'dark-link;';
   }
 

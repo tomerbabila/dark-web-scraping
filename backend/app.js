@@ -5,6 +5,9 @@ const { Op } = require('sequelize');
 const app = express();
 app.use(express.json());
 
+const dayInMilliseconds = 1000 * 60 * 60 * 24;
+const weekInMilliseconds = dayInMilliseconds * 7;
+
 // Get all posts from db
 app.get('/posts', async (req, res) => {
   try {
@@ -56,6 +59,38 @@ app.get('/search/:search', async (req, res) => {
       },
     });
     res.json(allPosts);
+  } catch (error) {
+    console.log('Error occurred: ', error);
+  }
+});
+
+app.get('/filter/byDay/:offset', async (req, res) => {
+  try {
+    const offset = parseInt(req.params.offset);
+
+    const afterWeek = new Date(offset).getTime() + weekInMilliseconds;
+
+    const byDayArr = [];
+
+    for (let i = offset; i < afterWeek; i += dayInMilliseconds) {
+      const postsBetweenDates = await Post.findAll({
+        where: {
+          date: {
+            [Op.between]: [new Date(i), new Date(i + dayInMilliseconds)],
+          },
+        },
+        raw: true,
+      });
+
+      byDayArr.push({
+        date: new Date(i).toLocaleDateString(),
+        posts: postsBetweenDates.length,
+      });
+    }
+
+    console.log(byDayArr);
+
+    res.json(byDayArr);
   } catch (error) {
     console.log('Error occurred: ', error);
   }
